@@ -52,12 +52,31 @@ export interface BlogQueryAllSentPostResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface BlogQueryAllTimeoutPostResponse {
+  TimeoutPost?: BlogTimeoutPost[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface BlogQueryGetPostResponse {
   Post?: BlogPost;
 }
 
 export interface BlogQueryGetSentPostResponse {
   SentPost?: BlogSentPost;
+}
+
+export interface BlogQueryGetTimeoutPostResponse {
+  TimeoutPost?: BlogTimeoutPost;
 }
 
 /**
@@ -72,6 +91,14 @@ export interface BlogSentPost {
   /** @format uint64 */
   id?: string;
   postID?: string;
+  title?: string;
+  chain?: string;
+  creator?: string;
+}
+
+export interface BlogTimeoutPost {
+  /** @format uint64 */
+  id?: string;
   title?: string;
   chain?: string;
   creator?: string;
@@ -442,6 +469,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   querySentPost = (id: string, params: RequestParams = {}) =>
     this.request<BlogQueryGetSentPostResponse, RpcStatus>({
       path: `/irclausen/planet/blog/sent_post/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTimeoutPostAll
+   * @summary Queries a list of TimeoutPost items.
+   * @request GET:/irclausen/planet/blog/timeout_post
+   */
+  queryTimeoutPostAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<BlogQueryAllTimeoutPostResponse, RpcStatus>({
+      path: `/irclausen/planet/blog/timeout_post`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTimeoutPost
+   * @summary Queries a TimeoutPost by id.
+   * @request GET:/irclausen/planet/blog/timeout_post/{id}
+   */
+  queryTimeoutPost = (id: string, params: RequestParams = {}) =>
+    this.request<BlogQueryGetTimeoutPostResponse, RpcStatus>({
+      path: `/irclausen/planet/blog/timeout_post/${id}`,
       method: "GET",
       format: "json",
       ...params,

@@ -8,6 +8,7 @@ import {
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
 import { SentPost } from "../blog/sent_post";
+import { TimeoutPost } from "../blog/timeout_post";
 
 export const protobufPackage = "irclausen.planet.blog";
 
@@ -51,6 +52,23 @@ export interface QueryAllSentPostRequest {
 
 export interface QueryAllSentPostResponse {
   SentPost: SentPost[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetTimeoutPostRequest {
+  id: number;
+}
+
+export interface QueryGetTimeoutPostResponse {
+  TimeoutPost: TimeoutPost | undefined;
+}
+
+export interface QueryAllTimeoutPostRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllTimeoutPostResponse {
+  TimeoutPost: TimeoutPost[];
   pagination: PageResponse | undefined;
 }
 
@@ -725,6 +743,323 @@ export const QueryAllSentPostResponse = {
   },
 };
 
+const baseQueryGetTimeoutPostRequest: object = { id: 0 };
+
+export const QueryGetTimeoutPostRequest = {
+  encode(
+    message: QueryGetTimeoutPostRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTimeoutPostRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTimeoutPostRequest,
+    } as QueryGetTimeoutPostRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTimeoutPostRequest {
+    const message = {
+      ...baseQueryGetTimeoutPostRequest,
+    } as QueryGetTimeoutPostRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTimeoutPostRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetTimeoutPostRequest>
+  ): QueryGetTimeoutPostRequest {
+    const message = {
+      ...baseQueryGetTimeoutPostRequest,
+    } as QueryGetTimeoutPostRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetTimeoutPostResponse: object = {};
+
+export const QueryGetTimeoutPostResponse = {
+  encode(
+    message: QueryGetTimeoutPostResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.TimeoutPost !== undefined) {
+      TimeoutPost.encode(
+        message.TimeoutPost,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTimeoutPostResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTimeoutPostResponse,
+    } as QueryGetTimeoutPostResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.TimeoutPost = TimeoutPost.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTimeoutPostResponse {
+    const message = {
+      ...baseQueryGetTimeoutPostResponse,
+    } as QueryGetTimeoutPostResponse;
+    if (object.TimeoutPost !== undefined && object.TimeoutPost !== null) {
+      message.TimeoutPost = TimeoutPost.fromJSON(object.TimeoutPost);
+    } else {
+      message.TimeoutPost = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTimeoutPostResponse): unknown {
+    const obj: any = {};
+    message.TimeoutPost !== undefined &&
+      (obj.TimeoutPost = message.TimeoutPost
+        ? TimeoutPost.toJSON(message.TimeoutPost)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetTimeoutPostResponse>
+  ): QueryGetTimeoutPostResponse {
+    const message = {
+      ...baseQueryGetTimeoutPostResponse,
+    } as QueryGetTimeoutPostResponse;
+    if (object.TimeoutPost !== undefined && object.TimeoutPost !== null) {
+      message.TimeoutPost = TimeoutPost.fromPartial(object.TimeoutPost);
+    } else {
+      message.TimeoutPost = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllTimeoutPostRequest: object = {};
+
+export const QueryAllTimeoutPostRequest = {
+  encode(
+    message: QueryAllTimeoutPostRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllTimeoutPostRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllTimeoutPostRequest,
+    } as QueryAllTimeoutPostRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllTimeoutPostRequest {
+    const message = {
+      ...baseQueryAllTimeoutPostRequest,
+    } as QueryAllTimeoutPostRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllTimeoutPostRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllTimeoutPostRequest>
+  ): QueryAllTimeoutPostRequest {
+    const message = {
+      ...baseQueryAllTimeoutPostRequest,
+    } as QueryAllTimeoutPostRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllTimeoutPostResponse: object = {};
+
+export const QueryAllTimeoutPostResponse = {
+  encode(
+    message: QueryAllTimeoutPostResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.TimeoutPost) {
+      TimeoutPost.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllTimeoutPostResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllTimeoutPostResponse,
+    } as QueryAllTimeoutPostResponse;
+    message.TimeoutPost = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.TimeoutPost.push(TimeoutPost.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllTimeoutPostResponse {
+    const message = {
+      ...baseQueryAllTimeoutPostResponse,
+    } as QueryAllTimeoutPostResponse;
+    message.TimeoutPost = [];
+    if (object.TimeoutPost !== undefined && object.TimeoutPost !== null) {
+      for (const e of object.TimeoutPost) {
+        message.TimeoutPost.push(TimeoutPost.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllTimeoutPostResponse): unknown {
+    const obj: any = {};
+    if (message.TimeoutPost) {
+      obj.TimeoutPost = message.TimeoutPost.map((e) =>
+        e ? TimeoutPost.toJSON(e) : undefined
+      );
+    } else {
+      obj.TimeoutPost = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllTimeoutPostResponse>
+  ): QueryAllTimeoutPostResponse {
+    const message = {
+      ...baseQueryAllTimeoutPostResponse,
+    } as QueryAllTimeoutPostResponse;
+    message.TimeoutPost = [];
+    if (object.TimeoutPost !== undefined && object.TimeoutPost !== null) {
+      for (const e of object.TimeoutPost) {
+        message.TimeoutPost.push(TimeoutPost.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -739,6 +1074,14 @@ export interface Query {
   SentPostAll(
     request: QueryAllSentPostRequest
   ): Promise<QueryAllSentPostResponse>;
+  /** Queries a TimeoutPost by id. */
+  TimeoutPost(
+    request: QueryGetTimeoutPostRequest
+  ): Promise<QueryGetTimeoutPostResponse>;
+  /** Queries a list of TimeoutPost items. */
+  TimeoutPostAll(
+    request: QueryAllTimeoutPostRequest
+  ): Promise<QueryAllTimeoutPostResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -805,6 +1148,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllSentPostResponse.decode(new Reader(data))
+    );
+  }
+
+  TimeoutPost(
+    request: QueryGetTimeoutPostRequest
+  ): Promise<QueryGetTimeoutPostResponse> {
+    const data = QueryGetTimeoutPostRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "irclausen.planet.blog.Query",
+      "TimeoutPost",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetTimeoutPostResponse.decode(new Reader(data))
+    );
+  }
+
+  TimeoutPostAll(
+    request: QueryAllTimeoutPostRequest
+  ): Promise<QueryAllTimeoutPostResponse> {
+    const data = QueryAllTimeoutPostRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "irclausen.planet.blog.Query",
+      "TimeoutPostAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllTimeoutPostResponse.decode(new Reader(data))
     );
   }
 }

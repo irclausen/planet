@@ -41,3 +41,8 @@ const (
 	SentPostKey      = "SentPost-value-"
 	SentPostCountKey = "SentPost-count-"
 )
+
+const (
+	TimeoutPostKey      = "TimeoutPost-value-"
+	TimeoutPostCountKey = "TimeoutPost-count-"
+)
